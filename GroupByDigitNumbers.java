@@ -14,14 +14,13 @@ public class GroupByDigitNumbers {
      */
     public Map<Integer, List<String>> groupByDigitNumbers(int[] input) {
         return Arrays.stream(input)
-                .filter(number -> number >= 0).mapToObj(number -> {
+                .filter(number -> number >= 0)
+                .mapToObj(number -> {
                     String prefix = (number % 2 == 0) ? "e" : "o";
                     return prefix + number;
                 })
                 .collect(Collectors.groupingBy(
-                        str -> str.length()-1,
-                        Collectors.toList()
-                ));
+                        str -> str.length()-1));
     }
 
     public static void main(String[] args) {
