@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GroupByDigitNumbers {
     /*
@@ -13,15 +12,19 @@ public class GroupByDigitNumbers {
       the output should be 1 -> ["o3", "e8"]; 2 -> ["e44", "o51"]; 3 -> ["e108"]
      */
     public Map<Integer, List<String>> groupByDigitNumbers(int[] input) {
-        return Arrays.stream(input)
-                .filter(number -> number >= 0).mapToObj(number -> {
-                    String prefix = (number % 2 == 0) ? "e" : "o";
-                    return prefix + number;
-                })
-                .collect(Collectors.groupingBy(
-                        str -> str.length()-1,
-                        Collectors.toList()
-                ));
+        Map<Integer, List<String>> map = new HashMap<>();
+
+        for (int number : input) {
+            if (number < 0) continue;
+
+            int length = (int) (Math.log10(number) + 1);  // use this instead of turning int to string then getting length
+            String prefix = (number % 2 == 0) ? "e" : "o";
+            String value = prefix + number;
+
+            map.computeIfAbsent(length, k -> new ArrayList<>()).add(value);
+        }
+
+        return map;
     }
 
     public static void main(String[] args) {
